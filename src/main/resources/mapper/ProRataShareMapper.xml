@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zc.followheart.mapper.ProRataShareMapper">
+
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO pro_rata_share
+        (ceo_office, department, organization,unit,expense_account,name,project,scale,version)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.ceoOffice}, #{item.department}, #{item.organization},
+            #{item.unit}, #{item.expenseAccount}, #{item.name}, #{item.project},#{item.scale},#{item.version})
+        </foreach>
+    </insert>
+
+
+    <update id="updateById">
+        update pro_rata_share
+        <set>
+            ceo_office = #{ceoOffice},
+            department = #{department},
+            organization = #{organization},
+            unit = #{unit},
+            expense_account = #{expenseAccount},
+            name = #{name},
+            project = #{project},
+            scale = #{scale},
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <select id="selectAll" resultType="com.zc.followheart.entity.ProRataShareData">
+        select id ,ceo_office as ceoOffice,department,organization,unit,
+        expense_account as expenseAccount,name,project,scale,version
+        from pro_rata_share
+        where version = (select MAX(version) from pro_rata_share A where A.is_deleted = 0)
+        <if test="name != null and name != ''">
+            and name = #{name}
+        </if>
+        and is_deleted = 0
+    </select>
+
+
+
+
+
+
+</mapper>

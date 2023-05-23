@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zc.followheart.mapper.ShareResultMapper">
+
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO share_result
+        (makeSum, company, month, department, fourthDepartment, adjustFourthDepartment, deptCode,
+        organization, subject, name, subjectCodeSalary, ledgerSubjectSalary, expenseItemSalary,
+        amountWagesPayable, subjectCodeSocial, ledgerSubjectSocial, expenseItemSocial, amountSocial,
+        subjectCodeGjj, ledgerSubjectGjj, expenseItemGjj, amountGjj, assist, projectCode,
+        projectName, buBpCode, buBpName, proRataShare, projectSalaryShare, projectSocialShare,
+        projectGjjShare, version)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+             #{item.makeSum}, #{item.company}, #{item.month},#{item.department}, #{item.fourthDepartment},
+             #{item.adjustFourthDepartment},#{item.deptCode}, #{item.organization}, #{item.subject}, #{item.name},
+             #{item.subjectCodeSalary},#{item.ledgerSubjectSalary},#{item.expenseItemSalary}, #{item.amountWagesPayable},
+             #{item.subjectCodeSocial}, #{item.ledgerSubjectSocial},
+             #{item.expenseItemSocial},#{item.amountSocial},#{item.subjectCodeGjj}, #{item.ledgerSubjectGjj}, #{item.expenseItemGjj},
+              #{item.amountGjj},#{item.assist},
+             #{item.projectCode},#{item.projectName}, #{item.buBpCode}, #{item.buBpName}, #{item.proRataShare},#{item.projectSalaryShare},
+            #{item.projectSocialShare},#{item.projectGjjShare},#{item.version}
+             )
+        </foreach>
+    </insert>
+
+
+
+    <select id="selectAll" resultType="com.zc.followheart.entity.ShareResultData">
+        select *
+        from share_result
+        where version = (select MAX(version) from share_result A where A.is_deleted = 0)
+        and is_deleted = 0
+    </select>
+
+
+
+
+
+
+</mapper>
